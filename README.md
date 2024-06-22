@@ -109,13 +109,7 @@ Para garantir a funcionalidade do sistema, serão realizados testes automatizado
 
 Para contribuir com o projeto, faça um fork do repositório, crie uma branch para suas alterações, e envie um pull request para revisão.
 
-## Licença
 
-Este projeto está licenciado sob a [Licença MIT](LICENSE).
-
----
-
-Substitua `path/to/` com os caminhos reais das imagens no repositório do GitHub. Caso precise de assistência adicional com as imagens ou qualquer outra parte do README, por favor, forneça mais detalhes ou envie os arquivos de imagem.
 
 
 
