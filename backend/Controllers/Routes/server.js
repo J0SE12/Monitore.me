@@ -1,10 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import { json } from 'body-parser';
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(json());
 
 // Rotas básicas
 app.get('/', (req, res) => {
