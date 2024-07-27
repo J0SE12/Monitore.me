@@ -1,14 +1,14 @@
 {
-    "name": "monitore-me-backend",
-    "version": "1.0.0",
-    "type": "module",
-    "main": "Controllers/Routes/server.js",
-    "scripts": {
-      "start": "node Controllers/Routes/server.js"
-    },
-    "dependencies": {
-      "express": "^4.17.1",
-      "body-parser": "^1.19.0"
-    }
+  "name": "monitore-me-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "Controllers/Routes/server.js",
+  "scripts": {
+    "start": "node Controllers/Routes/server.mjs"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "mysql": "^2.18.1"
   }
-  
+}
