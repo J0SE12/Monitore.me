@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Cadastro</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,28 +14,28 @@
       background-color: #f0f0f0;
       margin: 0;
     }
-    .login-container {
+    .register-container {
       background: #fff;
       padding: 2rem;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 300px;
     }
-    .login-container h2 {
+    .register-container h2 {
       margin-bottom: 1rem;
     }
-    .login-container label {
+    .register-container label {
       display: block;
       margin-bottom: 0.5rem;
     }
-    .login-container input {
+    .register-container input {
       width: 100%;
       padding: 0.5rem;
       margin-bottom: 1rem;
       border: 1px solid #ddd;
       border-radius: 4px;
     }
-    .login-container button {
+    .register-container button {
       width: 100%;
       padding: 0.5rem;
       background-color: #007bff;
@@ -44,28 +44,32 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .login-container button:hover {
+    .register-container button:hover {
       background-color: #0056b3;
     }
-    .login-container .form-group {
+    .register-container .form-group {
       margin-bottom: 1rem;
     }
-    .login-container a {
+    .register-container a {
       display: block;
       text-align: center;
       margin-top: 1rem;
       color: #007bff;
       text-decoration: none;
     }
-    .login-container a:hover {
+    .register-container a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form id="login-form">
+  <div class="register-container">
+    <h2>Cadastro de Usuário</h2>
+    <form id="register-form">
+      <div class="form-group">
+        <label for="nome">Nome Completo:</label>
+        <input type="text" id="nome" name="nome" required>
+      </div>
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
@@ -74,30 +78,41 @@
         <label for="senha">Senha:</label>
         <input type="password" id="senha" name="senha" required>
       </div>
-      <button type="submit">Login</button>
+      <div class="form-group">
+        <label for="papel">Papel:</label>
+        <select id="papel" name="papel" required>
+          <option value="aluno">Aluno</option>
+          <option value="monitor">Monitor</option>
+        </select>
+      </div>
+      <button type="submit">Cadastrar</button>
     </form>
-    <a href="/inscricao">Criar Novo Usuário</a>
+    <a href="/">Voltar para o Login</a>
   </div>
   <script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      const nome = document.getElementById('nome').value;
       const email = document.getElementById('email').value;
       const senha = document.getElementById('senha').value;
+      const papel = document.getElementById('papel').value;
 
       try {
-        const response = await fetch('/api/login', {
+        const response = await fetch('/api/create-user', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, senha }),
+          body: JSON.stringify({ nome, email, senha, papel }),
         });
 
+        const result = await response.json();
         if (response.ok) {
-          window.location.href = '/dashboard'; // Redireciona após login
+          alert('Usuário criado com sucesso!');
+          window.location.href = '/'; // Redireciona para a página de login
         } else {
-          alert('Login falhou!');
+          alert(result.message || 'Erro ao criar usuário.');
         }
       } catch (error) {
         console.error('Erro:', error);
