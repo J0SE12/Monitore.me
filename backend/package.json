@@ -4,12 +4,16 @@
   "type": "module",
   "main": "Controllers/Routes/server.js",
   "scripts": {
-    "start": "node Controllers/Routes/server.mjs"
+    "start": "node Controllers/Routes/server.mjs",
+    "lint": "'/**/*.{js,mjs}'"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
   }
 }
