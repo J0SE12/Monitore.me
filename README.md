@@ -63,9 +63,9 @@ O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por mi
    - package.json
 - backend : código-fonte do lado do servidor da aplicação
   -Controllers/Routes : Pasta que contém controladores e definições de rotas
-    -config :  arquivos de configuração para o projeto.
-    -database : Código e configuração do banco de dados
-     eslint.config.mjs : Arquivo de configuração para o ESLint, uma ferramenta de linting para JavaScrip
+    - config :  arquivos de configuração para o projeto.
+    - database : Código e configuração do banco de dados
+    - eslint.config.mjs : Arquivo de configuração para o ESLint, uma ferramenta de linting para JavaScrip
    - package-lock.json : Configuração do Node.js
   - package.json : Configuração do Node.js
 - node_modules : Dependências do Node.js
