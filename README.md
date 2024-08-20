@@ -41,7 +41,6 @@ Este projeto faz parte do portfólio para a conclusão do curso de Engenharia de
 
 O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por micro serviços para garantir uma separação clara de responsabilidades e facilitar a manutenção do sistema.
 
-![Arquitetura](path/to/arquitetura-image.png)
 
 ### Stack Tecnológica
 
@@ -50,7 +49,7 @@ O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por mi
 - **Banco de Dados**: MySQL
 - **Ferramentas e Bibliotecas**: React, Express.js, Git/GitHub, SonarQube, GitHub Actions, GitHub Pages
 - **Ambiente de Desenvolvimento**: VSCode
--  **Metodologia**: Kanban
+-  **Metodologia**: Gráfico de Gantt / Github Projects
   
 
 ### Estrutura do Repositório
@@ -84,7 +83,7 @@ O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por mi
 
 A plataforma visa facilitar o encontro de alunos com dificuldades em matérias específicas com monitores que desejam compartilhar seus conhecimentos. A modelagem do contexto pode ser visualizada na documentação associada.
 
-![Contexto](path/to/contexto-image.png)
+
 
 ### Containers
 
