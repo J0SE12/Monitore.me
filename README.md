@@ -55,23 +55,23 @@ O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por mi
 ### Estrutura do Repositório
 
 - .github - arquivos e configurações específicas do GitHub para o repositório
--Frontend/monitore_me_frontend - código-fonte para a parte frontend do projeto
+-Frontend/monitore_me_frontend : código-fonte para a parte frontend do projeto
   monitore-me-frontend
-   public - arquivos estáticos que são servidos diretamente pelo servido
-   src - código-fonte principal da aplicação
+   public : arquivos estáticos que são servidos diretamente pelo servido
+   src : código-fonte principal da aplicação
    package-lock.json
    package.json
-- backend - código-fonte do lado do servidor da aplicação
-  -Controllers/Routes - Pasta que contém controladores e definições de rotas
-    config -  arquivos de configuração para o projeto.
-    database - Código e configuração do banco de dados
-     eslint.config.mjs - Arquivo de configuração para o ESLint, uma ferramenta de linting para JavaScrip
-package-lock.json - Configuração do Node.js
-package.json - Configuração do Node.js
--node_modules - Dependências do Node.js
+- backend : código-fonte do lado do servidor da aplicação
+  -Controllers/Routes : Pasta que contém controladores e definições de rotas
+    config :  arquivos de configuração para o projeto.
+    database : Código e configuração do banco de dados
+     eslint.config.mjs : Arquivo de configuração para o ESLint, uma ferramenta de linting para JavaScrip
+package-lock.json : Configuração do Node.js
+package.json : Configuração do Node.js
+-node_modules : Dependências do Node.js
 .gitignore - 
-CNAME - usado para configurar um nome de domínio personalizado para o GitHub Pages
-README.md - Informações sobre o projeto
+CNAME : usado para configurar um nome de domínio personalizado para o GitHub Pages
+README.md : Informações sobre o projeto
 package-lock.json
 package.json
 
