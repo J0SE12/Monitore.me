@@ -81,6 +81,44 @@ app.get('/usuario', (req, res) => {
 // Utilize a rota importada
 app.use('/api', bancoRoute);
 
+// Rota para criar uma nova sala de aula
+app.post('/api/criar-sala', async (req, res) => {
+  const { nome, capacidade, localizacao, horarios } = req.body;
+
+  try {
+      // Iniciar uma transação
+      await pool.query('START TRANSACTION');
+
+      // Inserir a nova sala de aula
+      const [result] = await pool.query(
+          'INSERT INTO salas_de_aula (nome, capacidade, localizacao) VALUES (?, ?, ?)',
+          [nome, capacidade, localizacao]
+      );
+
+      const salaId = result.insertId; // Obter o ID da sala recém-criada
+
+      // Inserir os horários disponíveis para essa sala
+      for (const horario of horarios) {
+          const { dia_da_semana, hora_inicio, hora_fim } = horario;
+          await pool.query(
+              'INSERT INTO horarios_disponiveis (sala_de_aula_id, dia_da_semana, hora_inicio, hora_fim) VALUES (?, ?, ?, ?)',
+              [salaId, dia_da_semana, hora_inicio, hora_fim]
+          );
+      }
+
+      // Confirmar a transação
+      await pool.query('COMMIT');
+
+      res.status(200).json({ success: true, message: 'Sala de aula e horários criados com sucesso' });
+  } catch (error) {
+      // Reverter a transação em caso de erro
+      await pool.query('ROLLBACK');
+      console.error('Erro ao criar sala de aula:', error);
+      res.status(500).json({ success: false, message: 'Erro ao criar sala de aula' });
+  }
+});
+
+
 // Inicializar o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
