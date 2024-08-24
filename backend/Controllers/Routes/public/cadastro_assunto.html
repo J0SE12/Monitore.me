@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Assunto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Cadastro de Assunto</h1>
+        </div>
+        <form id="cadastroAssuntoForm">
+            <div class="form-group">
+                <label for="nome">Nome do Assunto</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="monitor_id">ID do Monitor</label>
+                <input type="number" id="monitor_id" name="monitor_id" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Cadastrar Assunto</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('cadastroAssuntoForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = {
+                nome: document.getElementById('nome').value,
+                descricao: document.getElementById('descricao').value,
+                monitor_id: document.getElementById('monitor_id').value
+            };
+
+            try {
+                const response = await fetch('/api/cadastrar-assunto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Assunto cadastrado com sucesso!');
+                    // Redirecionar ou limpar o formulário conforme necessário
+                } else {
+                    alert('Erro ao cadastrar assunto: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao cadastrar assunto.');
+            }
+        });
+    </script>
+</body>
+</html>
