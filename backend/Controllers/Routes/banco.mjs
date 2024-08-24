@@ -1,11 +1,72 @@
+// banco.mjs
+import mysql from 'mysql2/promise';
 import { Router } from 'express';
 
+// Configurações do banco de dados
+const pool = mysql.createPool({
+  host: 'localhost',  
+  user: 'Jose',       
+  password: 'teka5751', 
+  database: 'monitore' 
+});
+
+// Configuração das rotas
 const router = Router();
 
+// Exemplo de rota de teste
 router.get('/example', (req, res) => {
   res.send('This is an example route');
 });
 
-export default router; // Exporta o módulo padrão
+// Rota para criar uma nova sala de aula
+router.post('/criar-sala', async (req, res) => {
+  const { nome, capacidade, localizacao, horarios } = req.body;
+
+  try {
+    // Inserir a sala de aula no banco de dados
+    const [result] = await pool.query(
+      'INSERT INTO salas_de_aula (nome, capacidade, localizacao) VALUES (?, ?, ?)',
+      [nome, capacidade, localizacao]
+    );
+
+    const salaId = result.insertId;
+
+    // Inserir os horários disponíveis para a sala de aula
+    if (horarios && Array.isArray(horarios)) {
+      for (const horario of horarios) {
+        await pool.query(
+          'INSERT INTO horarios_disponiveis (sala_de_aula_id, dia_da_semana, hora_inicio, hora_fim) VALUES (?, ?, ?, ?)',
+          [salaId, horario.dia_da_semana, horario.hora_inicio, horario.hora_fim]
+        );
+      }
+    }
+
+    res.status(200).json({ success: true, message: 'Sala de aula criada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao criar sala de aula:', error);
+    res.status(500).json({ success: false, message: 'Erro ao criar sala de aula' });
+  }
+});
+
+// Rota para criar um novo assunto
+router.post('/criar-assunto', async (req, res) => {
+  const { nome, descricao, monitor_id } = req.body;
+
+  try {
+    // Inserir o assunto no banco de dados
+    await pool.query(
+      'INSERT INTO disciplinas (nome, descricao, monitor_id) VALUES (?, ?, ?)',
+      [nome, descricao, monitor_id]
+    );
+
+    res.status(200).json({ success: true, message: 'Assunto criado com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao criar assunto:', error);
+    res.status(500).json({ success: false, message: 'Erro ao criar assunto' });
+  }
+});
+
+export default { pool, router }; // Exporta o pool e o roteador
+
 
 
