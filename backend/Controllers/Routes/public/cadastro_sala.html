@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Sala de Aula</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link para o CSS, se necessário -->
+</head>
+<body>
+    <h1>Cadastro de Sala de Aula</h1>
+
+    <form id="form-criar-sala">
+        <label for="nome-sala">Nome da Sala:</label>
+        <input type="text" id="nome-sala" placeholder="Nome da Sala" required>
+
+        <label for="capacidade-sala">Capacidade:</label>
+        <input type="number" id="capacidade-sala" placeholder="Capacidade" required>
+
+        <label for="localizacao-sala">Localização:</label>
+        <input type="text" id="localizacao-sala" placeholder="Localização" required>
+        
+        <div id="horarios">
+            <div class="horario">
+                <label>Dia da Semana:</label>
+                <select class="dia-semana" required>
+                    <option value="Segunda">Segunda</option>
+                    <option value="Terça">Terça</option>
+                    <option value="Quarta">Quarta</option>
+                    <option value="Quinta">Quinta</option>
+                    <option value="Sexta">Sexta</option>
+                </select>
+                <label>Hora Início:</label>
+                <input type="time" class="hora-inicio" required>
+                <label>Hora Fim:</label>
+                <input type="time" class="hora-fim" required>
+            </div>
+        </div>
+
+        <button type="button" onclick="adicionarHorario()">Adicionar Horário</button>
+        <button type="submit">Criar Sala de Aula</button>
+    </form>
+
+    <script>
+        function adicionarHorario() {
+            const horariosDiv = document.getElementById('horarios');
+            const novoHorarioDiv = document.createElement('div');
+            novoHorarioDiv.classList.add('horario');
+
+            novoHorarioDiv.innerHTML = `
+                <label>Dia da Semana:</label>
+                <select class="dia-semana" required>
+                    <option value="Segunda">Segunda</option>
+                    <option value="Terça">Terça</option>
+                    <option value="Quarta">Quarta</option>
+                    <option value="Quinta">Quinta</option>
+                    <option value="Sexta">Sexta</option>
+                </select>
+                <label>Hora Início:</label>
+                <input type="time" class="hora-inicio" required>
+                <label>Hora Fim:</label>
+                <input type="time" class="hora-fim" required>
+            `;
+
+            horariosDiv.appendChild(novoHorarioDiv);
+        }
+
+        document.getElementById('form-criar-sala').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome-sala').value;
+            const capacidade = document.getElementById('capacidade-sala').value;
+            const localizacao = document.getElementById('localizacao-sala').value;
+            
+            const horarios = [];
+            const horarioElements = document.querySelectorAll('.horario');
+            horarioElements.forEach((element) => {
+                const dia_da_semana = element.querySelector('.dia-semana').value;
+                const hora_inicio = element.querySelector('.hora-inicio').value;
+                const hora_fim = element.querySelector('.hora-fim').value;
+
+                horarios.push({ dia_da_semana, hora_inicio, hora_fim });
+            });
+
+            const response = await fetch('/api/criar-sala', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, capacidade, localizacao, horarios })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+</body>
+</html>
