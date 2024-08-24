@@ -29,6 +29,14 @@ app.get('/inscricao', (req, res) => {
   res.sendFile(path.join(publicDirectory, 'inscricao.html'));
 });
 
+app.get('/inicial', (req, res) => {
+  res.sendFile(path.join(publicDirectory, 'inicial.html'));
+});
+
+app.get('/inicial/monitor', (req, res) => {
+  res.sendFile(path.join(publicDirectory, 'inicial.html'));
+});
+
 // Sirva arquivos estáticos
 app.use(express.static(publicDirectory));
 
