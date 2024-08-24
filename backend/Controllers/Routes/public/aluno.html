@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitore.me - Aluno</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .aluno-options {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .aluno-options button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .aluno-options button:hover {
+            background-color: #218838;
+        }
+        .disciplinas {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .disciplinas ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .disciplinas li {
+            background-color: #f8f9fa;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .disciplinas li:hover {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Área do Aluno</h1>
+        </div>
+        <div class="aluno-options">
+            <button onclick="acessarDisciplinas()">Acessar Disciplinas</button>
+            <button onclick="verHistorico()">Ver Histórico</button>
+        </div>
+        <div class="disciplinas" id="disciplinas" style="display: none;">
+            <h2>Suas Disciplinas</h2>
+            <ul>
+                <li>Matemática</li>
+                <li>Física</li>
+                <li>Química</li>
+                <li>Biologia</li>
+                <!-- Você pode adicionar as disciplinas dinamicamente usando backend -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function acessarDisciplinas() {
+            document.getElementById('disciplinas').style.display = 'block';
+            // Aqui você pode adicionar lógica para buscar e exibir disciplinas do aluno
+        }
+
+        function verHistorico() {
+            alert('Visualizando histórico de aulas assistidas');
+            // Aqui você pode redirecionar ou exibir o histórico do aluno
+        }
+    </script>
+</body>
+</html>
