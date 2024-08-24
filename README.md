@@ -41,7 +41,6 @@ Este projeto faz parte do portfólio para a conclusão do curso de Engenharia de
 
 O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por micro serviços para garantir uma separação clara de responsabilidades e facilitar a manutenção do sistema.
 
-![Arquitetura](path/to/arquitetura-image.png)
 
 ### Stack Tecnológica
 
@@ -50,25 +49,31 @@ O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por mi
 - **Banco de Dados**: MySQL
 - **Ferramentas e Bibliotecas**: React, Express.js, Git/GitHub, SonarQube, GitHub Actions, GitHub Pages
 - **Ambiente de Desenvolvimento**: VSCode
--  **Metodologia**: Kanban
+-  **Metodologia**: Gráfico de Gantt / Github Projects
   
 
 ### Estrutura do Repositório
 
-- `index.html`: Página principal do site.
-- `styles/`: Arquivos CSS.
-- `scripts/`: Arquivos JavaScript.
-- `images/`: Imagens utilizadas no site.
-- `backend/`: Código do servidor back-end.
-  - `server.js`: Servidor Node.js.
-  - `package.json`: Configuração do Node.js.
-  - `node_modules/`: Dependências do Node.js.
-- `database/`: Código e configuração do banco de dados.
-  - `dbconfig.js`: Configuração do banco de dados.
-  - `schema.sql`: Esquema do banco de dados.
-  - `data/`: Arquivos de dados (opcional).
-- `README.md`: Informações sobre o projeto.
-- `.github/workflows/build.yml`: Configuração do GitHub Actions.
+- .github - arquivos e configurações específicas do GitHub para o repositório
+- Frontend/monitore_me_frontend : código-fonte para a parte frontend do projeto
+  - monitore-me-frontend
+   - public : arquivos estáticos que são servidos diretamente pelo servido
+   - src : código-fonte principal da aplicação
+   - package-lock.json
+   - package.json
+- backend : código-fonte do lado do servidor da aplicação
+  -Controllers/Routes : Pasta que contém controladores e definições de rotas
+    - config :  arquivos de configuração para o projeto.
+    - database : Código e configuração do banco de dados
+    - eslint.config.mjs : Arquivo de configuração para o ESLint, uma ferramenta de linting para JavaScrip
+   - package-lock.json : Configuração do Node.js
+  - package.json : Configuração do Node.js
+- node_modules : Dependências do Node.js
+.gitignore - 
+- CNAME : usado para configurar um nome de domínio personalizado para o GitHub Pages
+- README.md : Informações sobre o projeto
+- package-lock.json
+- package.json
 
 ## Configuração e Hospedagem
 
@@ -84,7 +89,7 @@ O projeto utiliza a arquitetura MVC (Model-View-Controller) complementada por mi
 
 A plataforma visa facilitar o encontro de alunos com dificuldades em matérias específicas com monitores que desejam compartilhar seus conhecimentos. A modelagem do contexto pode ser visualizada na documentação associada.
 
-![Contexto](path/to/contexto-image.png)
+
 
 ### Containers
 
