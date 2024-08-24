@@ -5,6 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
 import pool from './banco.mjs'; // Importa o pool de conexões
+import criarSalaRoute from './criarSala.mjs'; // Importe a rota de criação de sala
+import cadastrarAssuntoRoute from './cadastrarAssunto.mjs'; // Importe a rota de criação de assunto
 
 const { json } = pkg;
 
@@ -13,6 +15,10 @@ const port = 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Adicionar as rotas importadas
+app.use('/api', criarSalaRoute);
+app.use('/api', cadastrarAssuntoRoute);
 
 // Verifique o caminho e ajuste conforme necessário
 const publicDirectory = path.join(__dirname, '..', 'Frontend', 'monitore_me_frontend', 'public');
