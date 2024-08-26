@@ -5,7 +5,7 @@
   "main": "Controllers/Routes/server.js",
   "scripts": {
     "start": "node Controllers/Routes/server.mjs",
-    "lint": "'/**/*.{js,mjs}'"
+    "build": "webpack --config webpack.config.js" 
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
