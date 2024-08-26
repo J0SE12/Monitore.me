@@ -4,10 +4,10 @@ import { Router } from 'express';
 
 // Configurações do banco de dados
 const pool = mysql.createPool({
-  host: 'localhost',  
-  user: 'Jose',       
-  password: 'teka5751', 
-  database: 'monitore' 
+  host: 'localhost',  // Substitua pelo seu host
+  user: 'Jose',       // Substitua pelo seu nome de usuário
+  password: 'teka5751', // Substitua pela sua senha
+  database: 'monitore' // Substitua pelo nome do seu banco de dados
 });
 
 // Configuração das rotas
@@ -66,7 +66,5 @@ router.post('/criar-assunto', async (req, res) => {
   }
 });
 
-export default { pool, router }; // Exporta o pool e o roteador
-
-
-
+// Exporta o router para ser utilizado em outros arquivos
+export default router;
