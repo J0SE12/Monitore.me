@@ -138,6 +138,67 @@ app.post('/api/cadastrar-assunto', async (req, res) => {
 app.use(express.json());
 app.use('/api/aluno', alunoRoutes); // Adiciona o prefixo da rota
 
+// Rota para registrar presença
+app.post('/api/registrar-presenca', async (req, res) => {
+  const { aula, aluno } = req.body;
+
+  try {
+    // Atualize o banco de dados para marcar a presença
+    await pool.query(
+      'INSERT INTO presencas (aula_id, aluno_id, presente) VALUES (?, ?, ?)',
+      [aula, aluno, true]
+    );
+
+    res.status(200).json({ message: 'Presença registrada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao registrar presença:', error);
+    res.status(500).json({ message: 'Erro ao registrar presença.' });
+  }
+});
+
+// Rotas para obter listas de aulas e alunos
+app.get('/api/aulas', async (req, res) => {
+  try {
+    const [aulas] = await pool.query('SELECT id, nome FROM aulas');
+    res.json(aulas);
+  } catch (error) {
+    console.error('Erro ao obter aulas:', error);
+    res.status(500).json({ message: 'Erro ao obter aulas.' });
+  }
+});
+
+app.get('/api/alunos', async (req, res) => {
+  try {
+    const [alunos] = await pool.query('SELECT id, nome FROM usuarios WHERE papel = "aluno"');
+    res.json(alunos);
+  } catch (error) {
+    console.error('Erro ao obter alunos:', error);
+    res.status(500).json({ message: 'Erro ao obter alunos.' });
+  }
+});
+
+// Rota para gerar comprovante de horas complementares
+app.get('/api/comprovante/:alunoId', async (req, res) => {
+  const { alunoId } = req.params;
+
+  try {
+    const [presencas] = await pool.query('SELECT * FROM presencas WHERE aluno_id = ?', [alunoId]);
+
+    // Verifique se o aluno tem presença em todas as aulas
+    const aulasCompletas = presencas.every(presenca => presenca.presente);
+
+    if (aulasCompletas) {
+      res.status(200).json({ message: 'Comprovante gerado com sucesso!' });
+    } else {
+      res.status(400).json({ message: 'O aluno não compareceu a todas as aulas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao gerar comprovante:', error);
+    res.status(500).json({ message: 'Erro ao gerar comprovante.' });
+  }
+});
+
+
 
 
 // Inicializar o servidor

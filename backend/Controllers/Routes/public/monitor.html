@@ -54,6 +54,10 @@
             window.location.href = 'cadastro_assunto.html';
         }
 
+        function controleChamadas() {
+            // Redirecionar para a nova página de controle de chamadas
+            window.location.href = 'controle_chamadas.html';
+        }
         async function carregarDisciplinas() {
             try {
                 const response = await fetch('/api/disciplinas');

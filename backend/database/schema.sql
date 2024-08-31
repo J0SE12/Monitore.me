@@ -38,3 +38,14 @@ CREATE TABLE horarios_disponiveis (
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (sala_de_aula_id) REFERENCES salas_de_aula(id_sala)
 );
+
+CREATE TABLE presencas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    aula_id INT NOT NULL,
+    aluno_id INT NOT NULL,
+    presente BOOLEAN NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (aula_id) REFERENCES salas_de_aula(id_sala),
+    FOREIGN KEY (aluno_id) REFERENCES usuarios(id)
+);

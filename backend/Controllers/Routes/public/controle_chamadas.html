@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Chamadas - Monitore.me</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Controle de Chamadas</h2>
+        <form id="form-presenca" action="/api/registrar-presenca" method="POST">
+            <div class="form-group">
+                <label for="aula">Selecione a Aula:</label>
+                <select class="form-control" id="aula" name="aula">
+                    <!-- Opções de aula serão carregadas dinamicamente -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="aluno">Selecione o Aluno:</label>
+                <select class="form-control" id="aluno" name="aluno">
+                    <!-- Opções de aluno serão carregadas dinamicamente -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar Presença</button>
+        </form>
+        <div id="comprovante"></div>
+    </div>
+
+    <script>
+        // Carregar as opções de aulas e alunos
+        async function carregarOpcoes() {
+            try {
+                const aulasResponse = await fetch('/api/aulas');
+                const alunosResponse = await fetch('/api/alunos');
+                const aulas = await aulasResponse.json();
+                const alunos = await alunosResponse.json();
+
+                const aulaSelect = document.getElementById('aula');
+                const alunoSelect = document.getElementById('aluno');
+
+                aulas.forEach(aula => {
+                    const option = document.createElement('option');
+                    option.value = aula.id;
+                    option.textContent = aula.nome;
+                    aulaSelect.appendChild(option);
+                });
+
+                alunos.forEach(aluno => {
+                    const option = document.createElement('option');
+                    option.value = aluno.id;
+                    option.textContent = aluno.nome;
+                    alunoSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar opções:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', carregarOpcoes);
+    </script>
+</body>
+</html>
