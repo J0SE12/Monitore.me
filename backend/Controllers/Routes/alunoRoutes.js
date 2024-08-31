@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../config/db.js'; // Ajuste o caminho para o seu arquivo de configuração do banco de dados
+import pool from './banco.mjs';
 
 const router = express.Router();
 

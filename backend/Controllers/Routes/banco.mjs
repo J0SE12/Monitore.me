@@ -66,5 +66,19 @@ router.post('/criar-assunto', async (req, res) => {
   }
 });
 
+// Rota para obter disciplinas disponíveis
+router.get('/disciplinas', async (req, res) => {
+  try {
+    const [disciplinas] = await pool.query('SELECT * FROM disciplinas');
+
+    res.json(disciplinas);
+  } catch (error) {
+    console.error('Erro ao obter disciplinas:', error);
+    res.status(500).json({ message: 'Erro ao obter disciplinas.' });
+  }
+});
+
+
+
 // Exporta o router para ser utilizado em outros arquivos
 export default router;
