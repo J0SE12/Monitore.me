@@ -1,10 +1,10 @@
 import express from 'express';
 import pkg from 'body-parser';
-import bancoRoute from './banco.mjs';
+import bancoRouter from './banco.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
-import pool from './banco.mjs'; // Importa o pool de conexões
+import pool from './banco.mjs';
 import criarSalaRoute from './criarSala.mjs'; // Importe a rota de criação de sala
 import cadastrarAssuntoRoute from './cadastrarAssunto.mjs'; // Importe a rota de criação de assunto
 
@@ -16,12 +16,8 @@ const port = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Adicionar as rotas importadas
-app.use('/api', criarSalaRoute);
-app.use('/api', cadastrarAssuntoRoute);
-
-// Verifique o caminho e ajuste conforme necessário
-const publicDirectory = path.join(__dirname, '..', 'Frontend', 'monitore_me_frontend', 'public');
+// Diretório público onde os arquivos HTML estão localizados
+const publicDirectory = path.join(__dirname, 'public');
 
 app.use(json());
 
@@ -35,8 +31,13 @@ app.get('/inscricao', (req, res) => {
   res.sendFile(path.join(publicDirectory, 'inscricao.html'));
 });
 
-// Sirva arquivos estáticos
+// Serve arquivos estáticos (como CSS e JS)
 app.use(express.static(publicDirectory));
+
+// Adiciona as rotas importadas
+app.use('/api', criarSalaRoute);
+app.use('/api', cadastrarAssuntoRoute);
+app.use('/api', bancoRouter);
 
 // Rota de login
 app.post('/api/login', async (req, res) => {
@@ -79,68 +80,59 @@ app.post('/api/create-user', async (req, res) => {
   }
 });
 
-app.get('/usuario', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'usuario.html'));
-});
-
-
-// Utilize a rota importada
-app.use('/api', bancoRoute);
-
 // Rota para criar uma nova sala de aula
 app.post('/api/criar-sala', async (req, res) => {
   const { nome, capacidade, localizacao, horarios } = req.body;
 
   try {
-      // Iniciar uma transação
-      await pool.query('START TRANSACTION');
+    // Iniciar uma transação
+    await pool.query('START TRANSACTION');
 
-      // Inserir a nova sala de aula
-      const [result] = await pool.query(
-          'INSERT INTO salas_de_aula (nome, capacidade, localizacao) VALUES (?, ?, ?)',
-          [nome, capacidade, localizacao]
+    // Inserir a nova sala de aula
+    const [result] = await pool.query(
+      'INSERT INTO salas_de_aula (nome, capacidade, localizacao) VALUES (?, ?, ?)',
+      [nome, capacidade, localizacao]
+    );
+
+    const salaId = result.insertId; // Obter o ID da sala recém-criada
+
+    // Inserir os horários disponíveis para essa sala
+    for (const horario of horarios) {
+      const { dia_da_semana, hora_inicio, hora_fim } = horario;
+      await pool.query(
+        'INSERT INTO horarios_disponiveis (sala_de_aula_id, dia_da_semana, hora_inicio, hora_fim) VALUES (?, ?, ?, ?)',
+        [salaId, dia_da_semana, hora_inicio, hora_fim]
       );
+    }
 
-      const salaId = result.insertId; // Obter o ID da sala recém-criada
+    // Confirmar a transação
+    await pool.query('COMMIT');
 
-      // Inserir os horários disponíveis para essa sala
-      for (const horario of horarios) {
-          const { dia_da_semana, hora_inicio, hora_fim } = horario;
-          await pool.query(
-              'INSERT INTO horarios_disponiveis (sala_de_aula_id, dia_da_semana, hora_inicio, hora_fim) VALUES (?, ?, ?, ?)',
-              [salaId, dia_da_semana, hora_inicio, hora_fim]
-          );
-      }
-
-      // Confirmar a transação
-      await pool.query('COMMIT');
-
-      res.status(200).json({ success: true, message: 'Sala de aula e horários criados com sucesso' });
+    res.status(200).json({ success: true, message: 'Sala de aula e horários criados com sucesso' });
   } catch (error) {
-      // Reverter a transação em caso de erro
-      await pool.query('ROLLBACK');
-      console.error('Erro ao criar sala de aula:', error);
-      res.status(500).json({ success: false, message: 'Erro ao criar sala de aula' });
+    // Reverter a transação em caso de erro
+    await pool.query('ROLLBACK');
+    console.error('Erro ao criar sala de aula:', error);
+    res.status(500).json({ success: false, message: 'Erro ao criar sala de aula' });
   }
 });
 
+// Rota para cadastrar um novo assunto
 app.post('/api/cadastrar-assunto', async (req, res) => {
   const { nome, descricao, monitor_id } = req.body;
 
   try {
-      await pool.query(
-          'INSERT INTO disciplinas (nome, descricao, monitor_id) VALUES (?, ?, ?)',
-          [nome, descricao, monitor_id]
-      );
+    await pool.query(
+      'INSERT INTO disciplinas (nome, descricao, monitor_id) VALUES (?, ?, ?)',
+      [nome, descricao, monitor_id]
+    );
 
-      res.status(200).json({ success: true, message: 'Assunto cadastrado com sucesso!' });
+    res.status(200).json({ success: true, message: 'Assunto cadastrado com sucesso!' });
   } catch (error) {
-      console.error('Erro ao cadastrar assunto:', error);
-      res.status(500).json({ success: false, message: 'Erro ao cadastrar assunto' });
+    console.error('Erro ao cadastrar assunto:', error);
+    res.status(500).json({ success: false, message: 'Erro ao cadastrar assunto' });
   }
 });
-
-
 
 // Inicializar o servidor
 app.listen(port, () => {

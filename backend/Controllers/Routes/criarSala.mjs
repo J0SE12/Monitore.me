@@ -1,5 +1,5 @@
 import express from 'express';
-import pool from '../banco.mjs'; // Certifique-se de ajustar o caminho conforme sua estrutura
+import pool from './banco.mjs'
 
 const router = express.Router();
 
