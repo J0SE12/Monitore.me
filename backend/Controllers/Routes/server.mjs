@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import pool from './banco.mjs';
 import criarSalaRoute from './criarSala.mjs'; // Importe a rota de criação de sala
 import cadastrarAssuntoRoute from './cadastrarAssunto.mjs'; // Importe a rota de criação de assunto
+import alunoRoutes from './alunoRoutes'
 
 const { json } = pkg;
 

@@ -78,6 +78,17 @@ router.get('/disciplinas', async (req, res) => {
   }
 });
 
+// Rota para obter salas de aula disponíveis
+router.get('/salas', async (req, res) => {
+  try {
+    const [salas] = await pool.query('SELECT * FROM salas_de_aula');
+    res.json(salas);
+  } catch (error) {
+    console.error('Erro ao obter salas de aula:', error);
+    res.status(500).json({ message: 'Erro ao obter salas de aula.' });
+  }
+});
+
 
 
 // Exporta o router para ser utilizado em outros arquivos
