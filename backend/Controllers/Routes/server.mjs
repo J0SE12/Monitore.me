@@ -134,6 +134,9 @@ app.post('/api/cadastrar-assunto', async (req, res) => {
   }
 });
 
+app.use(express.json());
+app.use('/api/aluno', alunoRoutes); // Adiciona o prefixo da rota
+
 
 
 // Inicializar o servidor
