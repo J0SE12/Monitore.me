@@ -7,53 +7,59 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-4">
         <!-- Cabeçalho -->
-        <div class="header text-center my-4">
-            <h1>Área do Aluno</h1>
+        <div class="header mb-4">
+            <h1 class="display-4">Área do Aluno</h1>
         </div>
 
         <!-- Seção de Perfil do Aluno -->
-        <div class="student-profile mt-4">
+        <div class="section border-bottom pb-4 mb-4">
             <h3>Perfil do Aluno</h3>
             <div id="profile-info">
                 <!-- Informações do perfil serão carregadas aqui -->
             </div>
         </div>
 
-        <!-- Barra de Pesquisa -->
-        <div class="search-bar d-flex flex-column flex-md-row align-items-center my-3">
-            <input type="text" class="form-control mr-2" id="search" placeholder="Pesquise por disciplinas...">
-            <button class="btn btn-primary mt-2 mt-md-0" onclick="pesquisarDisciplinas()">Pesquisar</button>
-        </div>
-
-        <!-- Filtro Avançado -->
-        <div class="filter-advanced mt-3">
-            <label for="monitor">Monitor:</label>
-            <select id="monitor" class="form-control">
-                <option value="">Selecione...</option>
-                <!-- Listar monitores aqui -->
-            </select>
-            <label for="horario">Horário:</label>
-            <input type="time" id="horario" class="form-control">
-            <button class="btn btn-secondary mt-2" onclick="pesquisarDisciplinasAvancado()">Filtrar</button>
-        </div>
-
-        <!-- Resultados da Pesquisa -->
-        <div class="results mt-4" id="results">
-            <!-- Resultados da pesquisa serão exibidos aqui -->
+        <!-- Seção de Pesquisa de Disciplinas -->
+        <div class="section border-bottom pb-4 mb-4">
+            <h3>Pesquisar Disciplinas</h3>
+            <div class="search-bar d-flex flex-column flex-md-row align-items-start my-3">
+                <input type="text" class="form-control mr-md-2 mb-2 mb-md-0" id="search" placeholder="Pesquise por disciplinas...">
+                <button class="btn btn-primary" onclick="pesquisarDisciplinas()">Pesquisar</button>
+            </div>
+            <!-- Filtro Avançado -->
+            <div class="filter-advanced mt-3">
+                <div class="form-group">
+                    <label for="monitor">Monitor:</label>
+                    <select id="monitor" class="form-control">
+                        <option value="">Selecione...</option>
+                        <!-- Listar monitores aqui -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="horario">Horário:</label>
+                    <input type="time" id="horario" class="form-control">
+                </div>
+                <button class="btn btn-secondary" onclick="pesquisarDisciplinasAvancado()">Filtrar</button>
+            </div>
+            <div class="results mt-4" id="results">
+                <!-- Resultados da pesquisa serão exibidos aqui -->
+            </div>
         </div>
 
         <!-- Seção de Notificações -->
-        <div class="notifications mt-4">
+        <div class="section border-bottom pb-4 mb-4">
             <h3>Notificações</h3>
             <ul id="notificationList">
                 <!-- Notificações serão carregadas aqui -->
             </ul>
         </div>
 
-        <!-- Botão para Avaliar Monitor -->
-        <button class="btn btn-primary mt-4" onclick="avaliarMonitor()">Avaliar Monitor</button>
+        <!-- Seção de Avaliação -->
+        <div class="section pb-4 mb-4">
+            <button class="btn btn-primary" onclick="avaliarMonitor()">Avaliar Monitor</button>
+        </div>
 
         <!-- Modal de Avaliação -->
         <div id="avaliacaoModal" class="modal fade" tabindex="-1" role="dialog">

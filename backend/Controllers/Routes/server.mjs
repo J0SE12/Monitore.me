@@ -134,6 +134,8 @@ app.post('/api/cadastrar-assunto', async (req, res) => {
   }
 });
 
+
+
 // Inicializar o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
