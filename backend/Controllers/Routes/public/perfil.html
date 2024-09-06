@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Aluno</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="display-4">Perfil do Aluno</h1>
+        <div class="form-group">
+            <label for="alunoId">ID do Aluno:</label>
+            <input type="text" id="alunoId" class="form-control" placeholder="Digite o ID do aluno">
+        </div>
+        <button class="btn btn-primary" onclick="carregarPerfil()">Carregar Perfil</button>
+
+        <div id="profile-info" class="mt-4">
+            <!-- Informações do perfil serão carregadas aqui -->
+        </div>
+    </div>
+
+    <script>
+        async function carregarPerfil() {
+            const alunoId = document.getElementById('alunoId').value;
+            if (!alunoId) {
+                alert('Por favor, digite o ID do aluno.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/perfil?id=${encodeURIComponent(alunoId)}`);
+                const perfil = await response.json();
+
+                const profileInfoDiv = document.getElementById('profile-info');
+                profileInfoDiv.innerHTML = `
+                    <p><strong>Nome:</strong> ${perfil.aluno_nome}</p>
+                    <p><strong>Total de Disciplinas:</strong> ${perfil.total_disciplinas}</p>
+                    <p><strong>Aulas em Andamento:</strong> ${perfil.aulas_em_andamento}</p>
+                    <p><strong>Total de Disciplinas Oferecidas:</strong> ${perfil.total_disciplinas_oferecidas}</p>
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar o perfil do aluno:', error);
+                alert('Erro ao carregar o perfil do aluno.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisar Disciplinas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="display-4">Pesquisar Disciplinas</h1>
+        <div class="search-bar d-flex flex-column flex-md-row align-items-start my-3">
+            <input type="text" class="form-control mr-md-2 mb-2 mb-md-0" id="search" placeholder="Pesquise por disciplinas...">
+            <button class="btn btn-primary" onclick="pesquisarDisciplinas()">Pesquisar</button>
+        </div>
+        <div class="results mt-4" id="results">
+            <!-- Resultados da pesquisa serão exibidos aqui -->
+        </div>
+    </div>
+
+    <script>
+        async function pesquisarDisciplinas() {
+            const searchQuery = document.getElementById('search').value;
+
+            try {
+                const response = await fetch(`/api/pesquisar-disciplinas?query=${encodeURIComponent(searchQuery)}`);
+                const disciplinas = await response.json();
+
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+
+                if (disciplinas.length > 0) {
+                    disciplinas.forEach(disciplina => {
+                        const disciplinaDiv = document.createElement('div');
+                        disciplinaDiv.className = 'discipline';
+
+                        const title = document.createElement('h2');
+                        title.textContent = disciplina.nome;
+
+                        const description = document.createElement('p');
+                        description.textContent = disciplina.descricao;
+
+                        const monitor = document.createElement('p');
+                        monitor.textContent = `Monitor: ${disciplina.monitor_nome}`;
+
+                        const certificadoBtn = document.createElement('button');
+                        certificadoBtn.className = 'btn btn-success';
+                        certificadoBtn.textContent = 'Baixar Certificado';
+                        certificadoBtn.onclick = () => downloadCertificado(disciplina.id_dsc);
+
+                        disciplinaDiv.appendChild(title);
+                        disciplinaDiv.appendChild(description);
+                        disciplinaDiv.appendChild(monitor);
+                        disciplinaDiv.appendChild(certificadoBtn);
+
+                        resultsDiv.appendChild(disciplinaDiv);
+                    });
+                } else {
+                    resultsDiv.textContent = 'Nenhuma disciplina encontrada.';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao pesquisar disciplinas.');
+            }
+        }
+
+        function downloadCertificado(disciplinaId) {
+            window.location.href = `/api/baixar-certificado?disciplinaId=${disciplinaId}`;
+        }
+    </script>
+</body>
+</html>

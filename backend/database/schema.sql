@@ -49,3 +49,11 @@ CREATE TABLE presencas (
     FOREIGN KEY (aula_id) REFERENCES salas_de_aula(id_sala),
     FOREIGN KEY (aluno_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE avaliacao_monitores (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  monitor_id INT NOT NULL,
+  feedback TEXT NOT NULL,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (monitor_id) REFERENCES usuarios(id)
+);
