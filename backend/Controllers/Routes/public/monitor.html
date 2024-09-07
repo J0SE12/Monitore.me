@@ -43,6 +43,10 @@
                 <!-- Salas de aula serão listadas aqui -->
             </ul>
         </div>
+
+        <!-- Botão para visualizar avaliações -->
+<button onclick="visualizarAvaliacoes()">Visualizar Avaliações</button>
+<div id="avaliacoes-list" class="mt-4"></div>
     </div>
 
     <script>
@@ -99,6 +103,11 @@
             carregarDisciplinas();
             carregarSalas();
         });
+
+        function visualizarAvaliacoes() {
+            // Redirecionar para a página de avaliações dos alunos
+            window.location.href = 'avaliacoesMonitor.html';
+        }
     </script>
 </body>
 </html>

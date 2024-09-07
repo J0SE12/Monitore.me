@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliações dos Alunos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="display-4">Avaliações dos Alunos</h1>
+        
+        <!-- Div para exibir as avaliações -->
+        <div id="avaliacoes-list" class="mt-4">
+            <!-- As avaliações dos alunos serão listadas aqui -->
+        </div>
+    </div>
+
+    <script>
+        // Função para carregar avaliações dos alunos para o monitor específico
+        async function carregarAvaliacoesMonitor() {
+            try {
+                const monitorId = /* Lógica para obter o ID do monitor logado */;
+
+                // Requisição para buscar as avaliações do monitor
+                const response = await fetch(`/api/avaliacoes/${monitorId}`);
+
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar as avaliações.');
+                }
+
+                const avaliacoes = await response.json();
+                const listaAvaliacoes = document.getElementById('avaliacoes-list');
+                listaAvaliacoes.innerHTML = ''; // Limpa a lista anterior
+
+                // Se não houver avaliações
+                if (avaliacoes.length === 0) {
+                    listaAvaliacoes.innerHTML = '<p class="alert alert-info">Não há avaliações deixadas pelos alunos.</p>';
+                    return;
+                }
+
+                // Itera pelas avaliações e exibe cada uma
+                avaliacoes.forEach(avaliacao => {
+                    const card = document.createElement('div');
+                    card.className = 'card mt-2';
+                    card.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">Aluno ID: ${avaliacao.aluno_id}</h5>
+                            <p class="card-text">Comentário: ${avaliacao.feedback}</p>
+                        </div>
+                    `;
+                    listaAvaliacoes.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar avaliações:', error);
+                document.getElementById('avaliacoes-list').innerHTML = '<p class="alert alert-danger">Erro ao carregar avaliações.</p>';
+            }
+        }
+
+        // Chama a função para carregar avaliações ao carregar a página
+        document.addEventListener('DOMContentLoaded', carregarAvaliacoesMonitor);
+    </script>
+</body>
+</html>
