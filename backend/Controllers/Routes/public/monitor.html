@@ -104,10 +104,49 @@
             carregarSalas();
         });
 
-        function visualizarAvaliacoes() {
-            // Redirecionar para a página de avaliações dos alunos
-            window.location.href = 'avaliacoesMonitor.html';
-        }
+        // Função para carregar avaliações dos alunos para o monitor específico
+async function carregarAvaliacoesMonitor() {
+  try {
+    // Obtém o ID do monitor do localStorage
+    const monitorId = localStorage.getItem('monitorId');
+
+    if (!monitorId) {
+      throw new Error('Monitor ID não encontrado.');
+    }
+
+    // Requisição para buscar as avaliações do monitor
+    const response = await fetch(`/api/avaliacoes/${monitorId}`);
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar as avaliações.');
+    }
+
+    const avaliacoes = await response.json();
+    const listaAvaliacoes = document.getElementById('avaliacoes-list');
+    listaAvaliacoes.innerHTML = ''; // Limpa a lista anterior
+
+    // Se não houver avaliações
+    if (avaliacoes.length === 0) {
+      listaAvaliacoes.innerHTML = '<p class="alert alert-info">Não há avaliações deixadas pelos alunos.</p>';
+      return;
+    }
+
+    // Adiciona as avaliações à lista
+    avaliacoes.forEach(avaliacao => {
+      const item = document.createElement('li');
+      item.textContent = `Avaliação: ${avaliacao.feedback}`;
+      listaAvaliacoes.appendChild(item);
+    });
+
+  } catch (error) {
+    console.error('Erro:', error);
+    alert('Erro ao carregar as avaliações.');
+  }
+}
+
+// Chama a função quando a página é carregada
+window.onload = carregarAvaliacoesMonitor;
+
     </script>
 </body>
 </html>

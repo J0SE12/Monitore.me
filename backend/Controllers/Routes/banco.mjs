@@ -10,6 +10,9 @@ const pool = mysql.createPool({
   database: 'monitore' // Substitua pelo nome do seu banco de dados
 });
 
+// Exporta o pool para ser utilizado em outros arquivos
+export { pool };
+
 // Configuração das rotas
 const router = Router();
 

@@ -9,6 +9,7 @@ import criarSalaRoute from './criarSala.mjs'; // Importe a rota de criação de 
 import cadastrarAssuntoRoute from './cadastrarAssunto.mjs'; // Importe a rota de criação de assunto
 import alunoRoutes from './alunoRoutes.mjs'
 
+
 const { json } = pkg;
 
 const app = express();
@@ -40,16 +41,30 @@ app.use('/api', criarSalaRoute);
 app.use('/api', cadastrarAssuntoRoute);
 app.use('/api', bancoRouter);
 
+
 // Rota de login
 app.post('/api/login', async (req, res) => {
   const { email, senha } = req.body;
 
   try {
+    // Busca o usuário no banco de dados
     const [rows] = await pool.query('SELECT * FROM usuarios WHERE email = ?', [email]);
     const usuario = rows[0];
 
+    // Verifica a senha
     if (usuario && await bcrypt.compare(senha, usuario.senha)) {
-      res.status(200).json({ message: 'Login bem-sucedido' });
+      // Retorna o ID do monitor se for um monitor
+      if (usuario.papel === 'monitor') {
+        res.status(200).json({
+          message: 'Login bem-sucedido',
+          monitorId: usuario.id  // Inclui o ID do monitor na resposta
+        });
+      } else {
+        res.status(200).json({
+          message: 'Login bem-sucedido',
+          monitorId: null  // Não é um monitor, então o ID será nulo
+        });
+      }
     } else {
       res.status(401).json({ message: 'Usuário ou senha incorretos' });
     }
@@ -58,6 +73,7 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ message: 'Erro na comunicação com o banco de dados' });
   }
 });
+
 
 // Rota para criar um novo usuário
 app.post('/api/create-user', async (req, res) => {
@@ -198,8 +214,8 @@ app.get('/api/comprovante/:alunoId', async (req, res) => {
   }
 });
 
-// Rota para avaliar o monitor
-router.post('/avaliar-monitor', async (req, res) => {
+// Substitua esta parte do código:
+app.post('/api/avaliar-monitor', async (req, res) => {
   const { monitorId, feedback } = req.body;
 
   if (!monitorId || !feedback) {
@@ -218,6 +234,7 @@ router.post('/avaliar-monitor', async (req, res) => {
     res.status(500).json({ message: 'Erro ao avaliar monitor.' });
   }
 });
+
 
 
 // Inicializar o servidor
