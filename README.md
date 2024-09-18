@@ -21,8 +21,6 @@ Este projeto faz parte do portfólio para a conclusão do curso de Engenharia de
 6. Cadastro de salas de aula e controle de disponibilidade.
 7. Controle de presença dos alunos, com sistema de chamada.
 8. Geração de comprovantes de horas complementares para alunos e monitores.
-9. Sistema de mensagens automáticas para comunicação entre monitores e alunos.
-10. Processos de seleção e verificação de monitores.
 
 ### Requisitos Não Funcionais
 
@@ -109,6 +107,8 @@ A plataforma visa facilitar o encontro de alunos com dificuldades em matérias e
 
 Para garantir a funcionalidade do sistema, serão realizados testes automatizados utilizando Selenium e Jest, além de testes de integração com Postman e pipelines de CI/CD configurados com GitHub Actions.
 
+## Link para a documentação completa do projeto:
+[(https://docs.google.com/document/d/14Gew23AlxLhiaMCUJ64g_wO_LfH1c2Vvt5vYlJ5yuJg/edit?usp=sharing)]
 
 ## Contribuição
 
