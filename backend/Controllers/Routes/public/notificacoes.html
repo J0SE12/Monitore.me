@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="display-4">Notificações</h1>
+        <ul id="notificationList" class="list-group">
+            <!-- Notificações serão carregadas aqui -->
+        </ul>
+    </div>
+
+    <script>
+        async function carregarNotificacoes() {
+            try {
+                const response = await fetch('/api/obter-notificacoes');
+                const notificacoes = await response.json();
+
+                const notificationList = document.getElementById('notificationList');
+                notificationList.innerHTML = '';
+
+                notificacoes.forEach(n => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item';
+                    li.textContent = n.mensagem;
+                    notificationList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar notificações:', error);
+                alert('Erro ao carregar notificações.');
+            }
+        }
+
+        carregarNotificacoes();
+    </script>
+</body>
+</html>

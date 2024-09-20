@@ -10,6 +10,9 @@ const pool = mysql.createPool({
   database: 'monitore' // Substitua pelo nome do seu banco de dados
 });
 
+// Exporta o pool para ser utilizado em outros arquivos
+export { pool };
+
 // Configuração das rotas
 const router = Router();
 
@@ -75,6 +78,17 @@ router.get('/disciplinas', async (req, res) => {
   } catch (error) {
     console.error('Erro ao obter disciplinas:', error);
     res.status(500).json({ message: 'Erro ao obter disciplinas.' });
+  }
+});
+
+// Rota para obter salas de aula disponíveis
+router.get('/salas', async (req, res) => {
+  try {
+    const [salas] = await pool.query('SELECT * FROM salas_de_aula');
+    res.json(salas);
+  } catch (error) {
+    console.error('Erro ao obter salas de aula:', error);
+    res.status(500).json({ message: 'Erro ao obter salas de aula.' });
   }
 });
 

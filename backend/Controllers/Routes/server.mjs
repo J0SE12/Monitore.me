@@ -7,6 +7,8 @@ import bcrypt from 'bcrypt';
 import pool from './banco.mjs';
 import criarSalaRoute from './criarSala.mjs'; // Importe a rota de criação de sala
 import cadastrarAssuntoRoute from './cadastrarAssunto.mjs'; // Importe a rota de criação de assunto
+import alunoRoutes from './alunoRoutes.mjs'
+
 
 const { json } = pkg;
 
@@ -39,16 +41,30 @@ app.use('/api', criarSalaRoute);
 app.use('/api', cadastrarAssuntoRoute);
 app.use('/api', bancoRouter);
 
+
 // Rota de login
 app.post('/api/login', async (req, res) => {
   const { email, senha } = req.body;
 
   try {
+    // Busca o usuário no banco de dados
     const [rows] = await pool.query('SELECT * FROM usuarios WHERE email = ?', [email]);
     const usuario = rows[0];
 
+    // Verifica a senha
     if (usuario && await bcrypt.compare(senha, usuario.senha)) {
-      res.status(200).json({ message: 'Login bem-sucedido' });
+      // Retorna o ID do monitor se for um monitor
+      if (usuario.papel === 'monitor') {
+        res.status(200).json({
+          message: 'Login bem-sucedido',
+          monitorId: usuario.id  // Inclui o ID do monitor na resposta
+        });
+      } else {
+        res.status(200).json({
+          message: 'Login bem-sucedido',
+          monitorId: null  // Não é um monitor, então o ID será nulo
+        });
+      }
     } else {
       res.status(401).json({ message: 'Usuário ou senha incorretos' });
     }
@@ -57,6 +73,7 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ message: 'Erro na comunicação com o banco de dados' });
   }
 });
+
 
 // Rota para criar um novo usuário
 app.post('/api/create-user', async (req, res) => {
@@ -136,6 +153,87 @@ app.post('/api/cadastrar-assunto', async (req, res) => {
 
 app.use(express.json());
 app.use('/api/aluno', alunoRoutes); // Adiciona o prefixo da rota
+
+// Rota para registrar presença
+app.post('/api/registrar-presenca', async (req, res) => {
+  const { aula, aluno } = req.body;
+
+  try {
+    // Atualize o banco de dados para marcar a presença
+    await pool.query(
+      'INSERT INTO presencas (aula_id, aluno_id, presente) VALUES (?, ?, ?)',
+      [aula, aluno, true]
+    );
+
+    res.status(200).json({ message: 'Presença registrada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao registrar presença:', error);
+    res.status(500).json({ message: 'Erro ao registrar presença.' });
+  }
+});
+
+// Rotas para obter listas de aulas e alunos
+app.get('/api/aulas', async (req, res) => {
+  try {
+    const [aulas] = await pool.query('SELECT id, nome FROM aulas');
+    res.json(aulas);
+  } catch (error) {
+    console.error('Erro ao obter aulas:', error);
+    res.status(500).json({ message: 'Erro ao obter aulas.' });
+  }
+});
+
+app.get('/api/alunos', async (req, res) => {
+  try {
+    const [alunos] = await pool.query('SELECT id, nome FROM usuarios WHERE papel = "aluno"');
+    res.json(alunos);
+  } catch (error) {
+    console.error('Erro ao obter alunos:', error);
+    res.status(500).json({ message: 'Erro ao obter alunos.' });
+  }
+});
+
+// Rota para gerar comprovante de horas complementares
+app.get('/api/comprovante/:alunoId', async (req, res) => {
+  const { alunoId } = req.params;
+
+  try {
+    const [presencas] = await pool.query('SELECT * FROM presencas WHERE aluno_id = ?', [alunoId]);
+
+    // Verifique se o aluno tem presença em todas as aulas
+    const aulasCompletas = presencas.every(presenca => presenca.presente);
+
+    if (aulasCompletas) {
+      res.status(200).json({ message: 'Comprovante gerado com sucesso!' });
+    } else {
+      res.status(400).json({ message: 'O aluno não compareceu a todas as aulas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao gerar comprovante:', error);
+    res.status(500).json({ message: 'Erro ao gerar comprovante.' });
+  }
+});
+
+// Substitua esta parte do código:
+app.post('/api/avaliar-monitor', async (req, res) => {
+  const { monitorId, feedback } = req.body;
+
+  if (!monitorId || !feedback) {
+    return res.status(400).json({ message: 'ID do monitor e feedback são obrigatórios.' });
+  }
+
+  try {
+    await pool.query(
+      'INSERT INTO avaliacao_monitores (monitor_id, feedback) VALUES (?, ?)',
+      [monitorId, feedback]
+    );
+
+    res.status(200).json({ message: 'Avaliação enviada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao avaliar monitor:', error);
+    res.status(500).json({ message: 'Erro ao avaliar monitor.' });
+  }
+});
 
 
 

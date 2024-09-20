@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitore.me - Monitor</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -15,18 +28,125 @@
             <button onclick="criarSala()">Criar Sala de Aula</button>
             <button onclick="criarAssunto()">Criar Assunto</button>
         </div>
+
+        <!-- Seção de visualização -->
+        <div class="section">
+            <h2>Disciplinas Criadas</h2>
+            <ul class="list-group" id="disciplinas-list">
+                <!-- Disciplinas serão listadas aqui -->
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Salas de Aula Criadas</h2>
+            <ul class="list-group" id="salas-list">
+                <!-- Salas de aula serão listadas aqui -->
+            </ul>
+        </div>
+
+        <!-- Botão para visualizar avaliações -->
+<button onclick="visualizarAvaliacoes()">Visualizar Avaliações</button>
+<div id="avaliacoes-list" class="mt-4"></div>
     </div>
 
     <script>
         function criarSala() {
-            // Redirecionar para a página de criação de sala de aula
             window.location.href = 'cadastro_sala.html';
         }
 
         function criarAssunto() {
-            // Redirecionar para a página de criação de assunto
             window.location.href = 'cadastro_assunto.html';
         }
+
+        function controleChamadas() {
+            // Redirecionar para a nova página de controle de chamadas
+            window.location.href = 'controle_chamadas.html';
+        }
+        async function carregarDisciplinas() {
+            try {
+                const response = await fetch('/api/disciplinas');
+                const disciplinas = await response.json();
+                const lista = document.getElementById('disciplinas-list');
+                lista.innerHTML = '';
+
+                disciplinas.forEach(disciplina => {
+                    const item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    item.textContent = `${disciplina.nome}: ${disciplina.descricao}`;
+                    lista.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar disciplinas:', error);
+            }
+        }
+
+        async function carregarSalas() {
+            try {
+                const response = await fetch('/api/salas');
+                const salas = await response.json();
+                const lista = document.getElementById('salas-list');
+                lista.innerHTML = '';
+
+                salas.forEach(sala => {
+                    const item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    item.textContent = `${sala.nome} - Capacidade: ${sala.capacidade}, Localização: ${sala.localizacao}`;
+                    lista.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar salas de aula:', error);
+            }
+        }
+
+        // Carregar disciplinas e salas ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarDisciplinas();
+            carregarSalas();
+        });
+
+        // Função para carregar avaliações dos alunos para o monitor específico
+async function carregarAvaliacoesMonitor() {
+  try {
+    // Obtém o ID do monitor do localStorage
+    const monitorId = localStorage.getItem('monitorId');
+
+    if (!monitorId) {
+      throw new Error('Monitor ID não encontrado.');
+    }
+
+    // Requisição para buscar as avaliações do monitor
+    const response = await fetch(`/api/avaliacoes/${monitorId}`);
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar as avaliações.');
+    }
+
+    const avaliacoes = await response.json();
+    const listaAvaliacoes = document.getElementById('avaliacoes-list');
+    listaAvaliacoes.innerHTML = ''; // Limpa a lista anterior
+
+    // Se não houver avaliações
+    if (avaliacoes.length === 0) {
+      listaAvaliacoes.innerHTML = '<p class="alert alert-info">Não há avaliações deixadas pelos alunos.</p>';
+      return;
+    }
+
+    // Adiciona as avaliações à lista
+    avaliacoes.forEach(avaliacao => {
+      const item = document.createElement('li');
+      item.textContent = `Avaliação: ${avaliacao.feedback}`;
+      listaAvaliacoes.appendChild(item);
+    });
+
+  } catch (error) {
+    console.error('Erro:', error);
+    alert('Erro ao carregar as avaliações.');
+  }
+}
+
+// Chama a função quando a página é carregada
+window.onload = carregarAvaliacoesMonitor;
+
     </script>
 </body>
 </html>

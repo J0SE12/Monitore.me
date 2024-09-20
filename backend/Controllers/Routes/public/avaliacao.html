@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliar Monitor</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="display-4">Avaliar Monitor</h1>
+        <form id="avaliacaoForm">
+            <div class="form-group">
+                <label for="monitorId">ID do Monitor:</label>
+                <input type="text" id="monitorId" class="form-control" placeholder="Digite o ID do monitor" required>
+            </div>
+            <div class="form-group">
+                <label for="feedback">Comentário:</label>
+                <textarea id="feedback" class="form-control" rows="4" placeholder="Escreva seu feedback aqui..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+        </form>
+
+        <div id="resultado" class="mt-4"></div>
+    </div>
+
+    <script>
+        document.getElementById('avaliacaoForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const monitorId = document.getElementById('monitorId').value;
+            const feedback = document.getElementById('feedback').value;
+
+            if (!monitorId || !feedback) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/avaliar-monitor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ monitorId, feedback })
+                });
+
+                if (response.ok) {
+                    document.getElementById('resultado').innerHTML = '<p class="alert alert-success">Avaliação enviada com sucesso!</p>';
+                    document.getElementById('avaliacaoForm').reset();
+                } else {
+                    const error = await response.json();
+                    document.getElementById('resultado').innerHTML = `<p class="alert alert-danger">Erro: ${error.message}</p>`;
+                }
+            } catch (error) {
+                console.error('Erro ao enviar avaliação:', error);
+                document.getElementById('resultado').innerHTML = '<p class="alert alert-danger">Erro ao enviar avaliação.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
+

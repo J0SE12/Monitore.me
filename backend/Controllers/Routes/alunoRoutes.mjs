@@ -1,5 +1,5 @@
 import express from 'express';
-import pool from './banco.mjs';
+import pool from './banco.mjs'
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get('/perfil', (req, res) => {
   }
 
   // Obter detalhes do aluno e status
-  db.query(`
+  pool.query(`
     SELECT 
       u.id AS aluno_id, 
       u.nome AS aluno_nome, 
@@ -47,7 +47,7 @@ router.get('/aulas', (req, res) => {
     return res.status(400).json({ error: 'ID do aluno não fornecido.' });
   }
 
-  db.query(`
+  pool.query(`
     SELECT 
       a.id AS aula_id,
       d.nome AS disciplina_nome,
