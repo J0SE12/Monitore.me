@@ -4,10 +4,10 @@ import bancoRouter from './banco.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
-import pool from './banco.mjs';
 import criarSalaRoute from './criarSala.mjs'; // Importe a rota de criação de sala
 import cadastrarAssuntoRoute from './cadastrarAssunto.mjs'; // Importe a rota de criação de assunto
 import alunoRoutes from './alunoRoutes.mjs'
+import userRoutes from './userRoutes.mjs';
 
 
 const { json } = pkg;
@@ -33,6 +33,9 @@ app.get('/inscricao', (req, res) => {
   res.sendFile(path.join(publicDirectory, 'inscricao.html'));
 });
 
+// Use as rotas de usuário
+app.use('/api', userRoutes);
+
 // Serve arquivos estáticos (como CSS e JS)
 app.use(express.static(publicDirectory));
 
@@ -55,7 +58,8 @@ app.post('/api/login', async (req, res) => {
     if (usuario && await bcrypt.compare(senha, usuario.senha)) {
       // Retorna o ID do monitor se for um monitor
       if (usuario.papel === 'monitor') {
-        res.status(200).json({
+        res.status(200).json({                         //copia
+
           message: 'Login bem-sucedido',
           monitorId: usuario.id  // Inclui o ID do monitor na resposta
         });

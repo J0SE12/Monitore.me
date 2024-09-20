@@ -3,94 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro</title>
+  <title>Inscrição</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f0f0f0;
       margin: 0;
     }
-    .register-container {
-      background: #fff;
-      padding: 2rem;
+    .registration-container {
+      background-color: #fff;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-    }
-    .register-container h2 {
-      margin-bottom: 1rem;
-    }
-    .register-container label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .register-container input {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 30px;
       width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
+      max-width: 400px;
+    }
+    .registration-container h2 {
+      margin-bottom: 20px;
+      color: #007bff;
+    }
+    .form-group label {
+      font-weight: bold;
+    }
+    .form-group input {
       border-radius: 4px;
     }
-    .register-container button {
-      width: 100%;
-      padding: 0.5rem;
+    button {
       background-color: #007bff;
-      border: none;
       color: #fff;
+      border: none;
       border-radius: 4px;
+      padding: 10px 15px;
+      font-size: 16px;
       cursor: pointer;
     }
-    .register-container button:hover {
+    button:hover {
       background-color: #0056b3;
     }
-    .register-container .form-group {
-      margin-bottom: 1rem;
-    }
-    .register-container a {
+    a {
       display: block;
+      margin-top: 15px;
       text-align: center;
-      margin-top: 1rem;
       color: #007bff;
       text-decoration: none;
     }
-    .register-container a:hover {
+    a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="register-container">
-    <h2>Cadastro de Usuário</h2>
-    <form id="register-form">
+  <div class="registration-container">
+    <h2>Inscrição</h2>
+    <form id="registration-form">
       <div class="form-group">
-        <label for="nome">Nome Completo:</label>
-        <input type="text" id="nome" name="nome" required>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required>
+        <input type="password" id="senha" name="senha" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="papel">Papel:</label>
-        <select id="papel" name="papel" required>
+        <select id="papel" name="papel" class="form-control" required>
           <option value="aluno">Aluno</option>
           <option value="monitor">Monitor</option>
         </select>
       </div>
-      <button type="submit">Cadastrar</button>
+      <button type="submit">Criar Conta</button>
     </form>
-    <a href="/">Voltar para o Login</a>
+    <a href="/">Voltar para Login</a>
   </div>
   <script>
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
+    document.getElementById('registration-form').addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const nome = document.getElementById('nome').value;
@@ -107,12 +101,12 @@
           body: JSON.stringify({ nome, email, senha, papel }),
         });
 
-        const result = await response.json();
         if (response.ok) {
-          alert('Usuário criado com sucesso!');
-          window.location.href = '/'; // Redireciona para a página de login
+          alert('Conta criada com sucesso!');
+          window.location.href = '/'; // Redireciona após criação
         } else {
-          alert(result.message || 'Erro ao criar usuário.');
+          const result = await response.json();
+          alert(result.message || 'Erro ao criar conta!');
         }
       } catch (error) {
         console.error('Erro:', error);
