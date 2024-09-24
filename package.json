@@ -4,7 +4,10 @@
   "description": "Monitore.me é uma plataforma de monitoria acadêmica que visa facilitar o contato entre estudantes com dificuldades de aprendizado e aqueles dispostos a ajudar com aulas de reforço. O sistema proporciona um ambiente para que os monitores possam compartilhar seus conhecimentos e, ao mesmo tempo, desenvolver suas habilidades de ensino.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "keywords": [],
   "author": "",
